@@ -1,0 +1,6 @@
+
+[DEFAULT]
+sender = "aa@example.com"
+receiver = "cc@example.com"
+login = "bb@example.com"
+password = "password"
