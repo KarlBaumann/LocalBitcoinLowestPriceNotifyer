@@ -9,9 +9,9 @@ config.read('config.ini')
 
 
 def send_mail(to, subject, content):
-    sender = config['DEFAULT']['sender']
-    login = config['DEFAULT']['login']
-    password = config['DEFAULT']['password']
+    sender = config['GMAIL']['sender']
+    login = config['GMAIL']['login']
+    password = config['GMAIL']['password']
 
     msg = MIMEText(content)
     msg['Subject'] = subject

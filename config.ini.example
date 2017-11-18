@@ -1,6 +1,12 @@
+[GENERAL]
+push_notification_price = 7000
 
-[DEFAULT]
+[GMAIL]
 sender = "aa@example.com"
 receiver = "cc@example.com"
 login = "bb@example.com"
 password = "password"
+
+[ONTOP]
+id = 1234567
+key = AAAAAAABBBBBBBBCCCCCCCC

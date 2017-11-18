@@ -1,6 +1,7 @@
 import time
 import requests
 import mailer
+import pusher
 import configparser
 
 config = configparser.ConfigParser()
@@ -19,6 +20,7 @@ def get_price():
 
 def run():
     old_price = 0
+    minimal_price_for_push = config["GENERAL"]["push_notification_price"]
 
     while True:
         new_price = get_price()
@@ -28,9 +30,10 @@ def run():
                 message = "price decreased to " + str(new_price)
             elif new_price > old_price:
                 message = "price increased to " + str(new_price)
-
+            if new_price < minimal_price_for_push:
+                pusher.push("Buy Bitcoin! Current price " + new_price + ", that is below " + minimal_price_for_push)
             old_price = new_price
-            mailer.send_mail(config['DEFAULT']['receiver'], message, "")
+            mailer.send_mail(config['GMAIL']['receiver'], message, "")
 
         time.sleep(30)
 
