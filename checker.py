@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 
 import time
 import requests
@@ -22,7 +22,7 @@ def get_price():
 
 def run():
     old_price = 0
-    minimal_price_for_push = config["GENERAL"]["push_notification_price"]
+    minimal_price_for_push = float(config["GENERAL"]["push_notification_price"])
 
     while True:
         new_price = get_price()
