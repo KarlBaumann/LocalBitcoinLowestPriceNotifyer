@@ -35,14 +35,18 @@ def run():
         new_price = get_price()
 
         if new_price != old_price:
+
             if new_price < old_price:
                 message = "price decreased to " + str(new_price)
             elif new_price > old_price:
                 message = "price increased to " + str(new_price)
             else:
                 print('Price is the same.\n\n')
+
             if new_price < minimal_price_for_push:
-                pusher.push("Buy Bitcoin! Current price " + str(new_price) + ", that is below " + minimal_price_for_push)
+                pusher.push(
+                    "Buy Bitcoin! Current price " + str(new_price) + ", that is below " + str(minimal_price_for_push))
+
             old_price = new_price
             mailer.send_mail(config['GMAIL']['receiver'], message, "")
 
