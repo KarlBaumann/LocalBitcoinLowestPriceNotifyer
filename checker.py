@@ -8,6 +8,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
+printing_message = ''
 
 
 def get_price():
@@ -15,11 +16,12 @@ def get_price():
         response = requests.get("https://localbitcoins.com/buy-bitcoins-online/eur/.json")
         data = response.json()
 
-        print('\n\nName: ' + data["data"]["ad_list"][0]["data"]['profile']['name'])
-        print('Loc: ' + data["data"]["ad_list"][0]["data"]['location_string'])
-        print('Online provider: ' + data["data"]["ad_list"][0]["data"]['online_provider'])
-        print('Bank: ' + data["data"]["ad_list"][0]["data"]['bank_name'])
-        print('Price: ' + data["data"]["ad_list"][0]["data"]["temp_price"])
+        global printing_message
+        printing_message = ('\n\nName: ' + data["data"]["ad_list"][0]["data"]['profile']['name'] +
+                            '\nLoc: ' + data["data"]["ad_list"][0]["data"]['location_string'] +
+                            '\nOnline provider: ' + data["data"]["ad_list"][0]["data"]['online_provider'] +
+                            '\nBank: ' + data["data"]["ad_list"][0]["data"]['bank_name'] +
+                            '\nPrice: ' + data["data"]["ad_list"][0]["data"]["temp_price"])
 
         return float(data["data"]["ad_list"][0]["data"]["temp_price"])
     except requests.exceptions.RequestException as e:
@@ -36,6 +38,8 @@ def run():
 
         if new_price != old_price:
 
+            # print(printing_message)
+
             if new_price < old_price:
                 message = "price decreased to " + str(new_price)
             elif new_price > old_price:
@@ -48,9 +52,11 @@ def run():
                     "Buy Bitcoin! Current price " + str(new_price) + ", that is below " + str(minimal_price_for_push))
 
             old_price = new_price
-            mailer.send_mail(config['GMAIL']['receiver'], message, "")
+            mailer.send_mail(config['GMAIL']['receiver'], message, printing_message)
+        else:
+            print("-=", end="")
 
-        time.sleep(30)
+        time.sleep(10)
 
 
 try:
