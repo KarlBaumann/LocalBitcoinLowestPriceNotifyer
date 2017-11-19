@@ -54,7 +54,7 @@ def run():
             old_price = new_price
             mailer.send_mail(config['GMAIL']['receiver'], message, printing_message)
         else:
-            print("-=", end="")
+            print("-=", end='', flush=True)
 
         time.sleep(10)
 
