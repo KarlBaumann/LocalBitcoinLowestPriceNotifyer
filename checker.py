@@ -14,6 +14,13 @@ def get_price():
     try:
         response = requests.get("https://localbitcoins.com/buy-bitcoins-online/eur/.json")
         data = response.json()
+
+        print('\n\nName: ' + data["data"]["ad_list"][0]["data"]['profile']['name'])
+        print('Loc: ' + data["data"]["ad_list"][0]["data"]['location_string'])
+        print('Online provider: ' + data["data"]["ad_list"][0]["data"]['online_provider'])
+        print('Bank: ' + data["data"]["ad_list"][0]["data"]['bank_name'])
+        print('Price: ' + data["data"]["ad_list"][0]["data"]["temp_price"])
+
         return float(data["data"]["ad_list"][0]["data"]["temp_price"])
     except requests.exceptions.RequestException as e:
         # A serious problem happened, like an SSLError or InvalidURL
@@ -21,8 +28,8 @@ def get_price():
 
 
 def run():
-    old_price = 0
     minimal_price_for_push = float(config["GENERAL"]["push_notification_price"])
+    old_price = minimal_price_for_push + 1
 
     while True:
         new_price = get_price()
@@ -32,8 +39,10 @@ def run():
                 message = "price decreased to " + str(new_price)
             elif new_price > old_price:
                 message = "price increased to " + str(new_price)
+            else:
+                print('Price is the same.\n\n')
             if new_price < minimal_price_for_push:
-                pusher.push("Buy Bitcoin! Current price " + new_price + ", that is below " + minimal_price_for_push)
+                pusher.push("Buy Bitcoin! Current price " + str(new_price) + ", that is below " + minimal_price_for_push)
             old_price = new_price
             mailer.send_mail(config['GMAIL']['receiver'], message, "")
 
