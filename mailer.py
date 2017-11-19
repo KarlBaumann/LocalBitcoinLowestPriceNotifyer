@@ -24,7 +24,7 @@ def send_mail(to, subject, content):
     mail.login(login, password)
     mail.sendmail(sender, [to], msg.as_string())
 
-    print("Mail to " + to + " sent.\nSubject: " + subject + "\nMessage: " + content)
+    print("\n..:: Mail to " + to + " sent ::..\nSubject: " + subject + "\nMessage: " + content)
     mail.quit()
 
     # sendMail('testing')
